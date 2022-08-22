@@ -1,7 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const Books = require('../model/bookModel');
 
-// @desc    Set goal
+// @desc    add Books
 // @route   POST /api/addBook
 // @access  Public
 const addBook = asyncHandler(async (req, res) => {
@@ -37,6 +37,38 @@ const addBook = asyncHandler(async (req, res) => {
   }
 });
 
+// @desc    Update books
+// @route   PUT /api/books/:id
+// @access  Public
+const updateBookDetails = asyncHandler(async (req, res) => {
+  const book = await Books.findOne({ bookId: req.params.id });
+
+  if (!book) {
+    res.status(400);
+    throw new Error('book not found');
+  }
+  const newData = {
+    bookId: req.body.bookId,
+    name: req.body.name,
+    author: req.body.author,
+    publishedYear: req.body.publishedYear,
+    price: req.body.price,
+    status: req.body.status,
+  };
+
+  const filter = { bookId: req.params.id };
+  const updatedData = await Books.findOneAndUpdate(filter, newData, {
+    new: true,
+  });
+
+  res.status(200).json(updatedData);
+});
+
+// @desc    Delete goal
+// @route   DELETE /api/books/:id
+// @access  Public
+
 module.exports = {
   addBook,
+  updateBookDetails,
 };

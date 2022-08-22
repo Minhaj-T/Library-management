@@ -8,7 +8,12 @@ const bookSchema = mongoose.Schema(
       },
       name: {
         type: String,
-        required: [true, 'Please add an name'],
+        required: [true, 'Please add a name'],
+        unique: true,
+      },
+      author: {
+        type: String,
+        required: [true, 'Please add a author name'],
       },
       author: {
         type: String,
