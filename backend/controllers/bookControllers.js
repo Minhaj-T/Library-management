@@ -64,11 +64,23 @@ const updateBookDetails = asyncHandler(async (req, res) => {
   res.status(200).json(updatedData);
 });
 
-// @desc    Delete goal
+// @desc    Delete book
 // @route   DELETE /api/books/:id
 // @access  Public
+const deleteBook = asyncHandler(async (req, res) => {
+  const book = await Books.findOne({ bookId: req.params.id });
+
+  if (!book) {
+    res.status(400);
+    throw new Error('Goal not found');
+  }
+
+  await book.remove();
+  res.status(200).json({ id: req.params.id });
+});
 
 module.exports = {
   addBook,
   updateBookDetails,
+  deleteBook,
 };
